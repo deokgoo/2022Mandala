@@ -3,9 +3,8 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { nanoid } from 'nanoid'
 import { SignJWT, jwtVerify } from 'jose';
-import { USER_TOKEN, JWT_SECRET_KEY } from './constants'
-import { jsonResponse } from './utils'
-
+import { USER_TOKEN, JWT_SECRET_KEY } from './constants';
+import { jsonResponse } from './utils';
 interface UserJwtPayload {
   jti: string
   iat: number
@@ -41,6 +40,9 @@ export async function setUserCookie(
   response: NextResponse
 ) {
   const cookie = request.cookies[USER_TOKEN]
+
+  // 여기서 토큰을 확인해서 있으면 => silent login
+  // 토큰이 없으면 => 로그인 페이지로 돌아가기
 
   if (!cookie) {
     const token = await new SignJWT({})
